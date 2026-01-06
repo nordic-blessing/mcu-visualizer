@@ -4,9 +4,11 @@ import gpio from "../modules/gpio/gpio.js";
 import uart from "../modules/uart/uart.js";
 import i2c  from "../modules/i2c/i2c.js";
 import spi  from "../modules/spi/spi.js";
+import can  from "../modules/can/can.js";
+import fdcan from "../modules/fdcan/fdcan.js";
 
 export const App = {
-  modules: { gpio, uart, i2c, spi },
+  modules: { gpio, uart, i2c, spi, can, fdcan },
   page: "gpio",
   playing: false,
   progress: 0,
@@ -16,12 +18,17 @@ export const App = {
     uart: uart.defaultState(),
     i2c:  i2c.defaultState(),
     spi:  spi.defaultState(),
+    can:  can.defaultState(),
+    fdcan: fdcan.defaultState(),
   }
 };
 
 export const $ = (s)=>document.querySelector(s);
 export const $$ = (s)=>Array.from(document.querySelectorAll(s));
 export const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+
+// 防抖计时器
+let renderDebounceTimer = null;
 
 export function setPlaying(on){
   App.playing = !!on;
@@ -92,17 +99,31 @@ function renderConfig(){
       if(f.step!=null) input.step = String(f.step);
       input.value = String(st[f.key]);
 
+    }else if(f.type === "textarea"){
+      input = document.createElement("textarea");
+      input.className = "data-textarea";
+      input.rows = f.rows || 4;
+      input.placeholder = f.placeholder || "0x00 0x01 0x02...";
+      input.value = String(st[f.key] ?? "");
+      
     }else{
       input = document.createElement("input");
       input.type = "text";
       input.value = String(st[f.key] ?? "");
+      if(f.placeholder) input.placeholder = f.placeholder;
     }
 
     input.addEventListener("input", ()=>{
       mod.onConfigChange?.(st, f.key, input.value);
       if(f.type === "number") st[f.key] = parseFloat(input.value||"0");
       else st[f.key] = input.value;
-      renderAll();
+      
+      // 防抖：等待 300ms 后只更新动态内容（电路+时序），保持配置框不动
+      if(renderDebounceTimer) clearTimeout(renderDebounceTimer);
+      renderDebounceTimer = setTimeout(() => {
+        renderDebounceTimer = null;
+        renderDynamic();
+      }, 300);
     });
 
     wrap.appendChild(lab);
@@ -137,6 +158,12 @@ export function renderAll(){
 
   renderConfig();
   renderKnowledge();
+  renderDynamic();
+}
+
+/* ================= 仅更新动态内容（电路 + 时序），保持配置区域不动 ================= */
+export function renderDynamic(){
+  const mod = App.modules[App.page];
   mod.renderCircuit(App, $("#circuitSvg"), $("#circuitHint"));
   mod.renderTiming(App, $("#timingSvg"), $("#timingHint"));
 }

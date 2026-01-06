@@ -27,6 +27,8 @@
           <a class="nav-item" href="#uart" data-page="uart">📟 UART <span class="pill">协议解码</span></a>
           <a class="nav-item" href="#i2c" data-page="i2c">🧠 I²C <span class="pill">开漏+ACK</span></a>
           <a class="nav-item" href="#spi" data-page="spi">⚙️ SPI <span class="pill">CPOL/CPHA</span></a>
+          <a class="nav-item" href="#can" data-page="can">🚗 CAN <span class="pill">仲裁+ID过滤</span></a>
+          <a class="nav-item" href="#fdcan" data-page="fdcan">⚡ CAN FD <span class="pill">高速数据</span></a>
         </div>
 
         <div class="card">
@@ -62,7 +64,7 @@
         </div>
 
         <div class="card">
-          <div class="card-title">电路示意（动态）</div>
+          <div class="card-title">电路示意</div>
           <svg id="circuitSvg" class="circuitSvg" viewBox="0 0 980 460"></svg>
           <div id="circuitHint" class="hint" style="margin-top:10px;"></div>
         </div>
@@ -70,7 +72,7 @@
 
       <div class="card timing-card">
         <div class="timing-head">
-          <div class="card-title">时序图（带协议着色）</div>
+          <div class="card-title">时序图</div>
           <div class="timing-right">
             <span class="tag">速度</span>
             <input id="speed" class="num" type="number" min="0.2" max="4" step="0.2" value="1.0"/>
