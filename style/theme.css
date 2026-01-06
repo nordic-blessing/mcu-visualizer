@@ -1,0 +1,346 @@
+:root{
+  --bg:#0b1020;
+  --panel:#121a33;
+  --panel2:#0f1730;
+  --text:#e8ecff;
+  --muted:#a9b2d6;
+  --accent:#6ea8ff;
+  --ok:#45d483;
+  --danger:#ff6e8a;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --radius:16px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", "Helvetica Neue", Arial;
+}
+
+[data-theme="light"]{
+  --bg:#f6f7fb;
+  --panel:#ffffff;
+  --panel2:#f1f3ff;
+  --text:#111425;
+  --muted:#485070;
+  --accent:#2f6bff;
+  --ok:#0b8f43;
+  --danger:#d11a3a;
+  --border:rgba(0,0,0,.08);
+  --shadow:0 10px 30px rgba(10,20,80,.15);
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% 10%, rgba(110,168,255,.25), transparent 60%),
+    radial-gradient(1200px 600px at 90% 10%, rgba(255,110,138,.16), transparent 55%),
+    var(--bg);
+  overflow:hidden; /* 一屏 */
+}
+
+/* ===== 全局 SVG 可读性增强（不改你各模块绘图代码） ===== */
+svg{
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+svg text{
+  /* presentation attribute 会被 CSS 覆盖：提升清晰度 */
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  letter-spacing: .15px;
+}
+
+/* ===== topbar ===== */
+.topbar{
+  height:60px;
+  position:sticky; top:0; z-index:10;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--bg) 65%, transparent);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  height:60px;
+  max-width:1400px;
+  margin:0 auto;
+  padding:0 16px;
+  display:flex; align-items:center; gap:12px;
+}
+.brand{ display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:.3px; }
+.brand-dot{
+  width:12px; height:12px; border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 20%, transparent);
+}
+.spacer{ flex:1; }
+
+/* ===== shell ===== */
+.shell{
+  height:calc(100vh - 60px);
+  max-width:1400px;
+  margin:0 auto;
+  padding:14px 16px 16px;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:14px;
+}
+
+.side, .main{
+  height:100%;
+  background: color-mix(in srgb, var(--panel) 90%, transparent);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.side-scroll{
+  height:100%;
+  padding:14px;
+  overflow:auto;
+}
+
+.side-title{
+  font-size:13px;
+  color:var(--muted);
+  font-weight:800;
+  margin-bottom:8px;
+}
+.nav-item{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 10px;
+  border-radius:12px;
+  text-decoration:none;
+  color:var(--text);
+  border:1px solid transparent;
+  margin:6px 0;
+}
+.nav-item:hover{
+  background: color-mix(in srgb, var(--panel2) 70%, transparent);
+  border-color: var(--border);
+}
+.nav-item.active{
+  background: color-mix(in srgb, var(--accent) 18%, var(--panel2));
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+.pill{
+  margin-left:auto;
+  font-size:12px;
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:var(--mono);
+}
+
+/* ===== main ===== */
+.main{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  overflow:hidden;
+  min-height:0;
+}
+
+.main-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding-bottom: 6px;
+}
+.h1{ font-size:22px; font-weight:950; letter-spacing:.2px; }
+.sub{ margin-top:4px; color:var(--muted); font-size:13px; line-height:1.6; }
+
+.controls{ display:flex; gap:10px; flex-wrap:wrap; }
+
+.btn{
+  appearance:none;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:800;
+  user-select:none;
+}
+.btn:hover{
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+}
+.btn.primary{
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 22%, var(--panel));
+}
+.btn.danger{
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+  background: color-mix(in srgb, var(--danger) 14%, var(--panel));
+}
+
+/* ✅ 卡片必须 overflow:hidden，保证圆角边界干净 */
+.card{
+  background: color-mix(in srgb, var(--panel2) 85%, transparent);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  overflow:hidden;
+}
+
+.card-title{
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background: color-mix(in srgb, var(--panel2) 70%, transparent);
+  font-family:var(--mono);
+}
+
+.hint{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.65;
+}
+
+.knowledge .kTitle{ font-weight:950; margin-bottom:8px; }
+.knowledge .kRow{ display:flex; gap:10px; margin:6px 0; }
+.knowledge .kKey{ width:44px; color:var(--muted); font-family:var(--mono); font-size:12px; }
+.knowledge .kVal{ flex:1; color:var(--text); opacity:.92; font-size:13px; line-height:1.65; }
+
+/* ===== 上方：配置 + 原理图 =====
+   ✅ 不用 min-height “硬顶”
+   ✅ 让 top 占固定比例，底部时序占剩余空间
+*/
+.grid-top{
+  display:grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap:12px;
+
+  /* 关键：把高度分配“稳住” */
+  flex: 0 0 40%;
+  min-height:0;
+}
+
+.grid-top .card{
+  height:100%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* 配置区 */
+#configArea{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{ font-size:12px; color:var(--muted); }
+select, input[type="text"], input[type="number"]{
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--panel2) 80%, transparent);
+  color:var(--text);
+  outline:none;
+}
+.num{ width:96px; }
+
+/* ✅ SVG：不再用 height:0 + min-height 顶爆布局
+   ✅ 直接 flex 填充容器剩余高度，边界不会破
+*/
+.circuitSvg{
+  width:100%;
+  flex: 1 1 0;
+  min-height:0;
+  height:100%;
+  display:block;
+
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--panel2) 75%, transparent);
+}
+
+/* ===== 下方：时序图 ===== */
+.timing-card{
+  flex: 1 1 0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  overflow:hidden; /* ✅ 防止内容“漏”出圆角边界 */
+}
+
+.timing-head{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:0;
+}
+.timing-right{ display:flex; align-items:center; gap:10px; }
+.timing-scrub{ display:flex; align-items:center; gap:8px; margin-top:0; }
+.timing-scrub input[type="range"]{ flex:1; }
+
+.timing-scrub .tag{ padding:2px 6px; font-size:11px; }
+.timing-right .tag{ padding:2px 6px; font-size:11px; }
+#speed.num{ padding:6px 10px; height:34px; }
+#scrub{ height:16px; }
+
+.timingSvg{
+  width:100%;
+  flex: 1 1 0;
+  min-height:0;
+  height:100%;
+  display:block;
+
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: color-mix(in srgb, var(--panel2) 75%, transparent);
+}
+
+/* 电流流动：默认暂停，播放时运行 */
+.flow{ stroke-dasharray: 8 10; animation: dash 0.7s linear infinite; animation-play-state: paused; opacity: .95; }
+body.playing .flow{ animation-play-state: running; }
+@keyframes dash { to { stroke-dashoffset: -18; } }
+
+/* 小屏：允许滚动 */
+@media (max-width: 1100px){
+  body{ overflow:auto; }
+  .shell{ height:auto; grid-template-columns:1fr; }
+  .side, .main{ height:auto; }
+  .main{ overflow:visible; }
+
+  .grid-top{
+    grid-template-columns:1fr;
+    flex: none;
+  }
+
+  .circuitSvg{ height:520px; }
+  .timingSvg{ height:380px; }
+}
+
+/* 全部字先提升一档 */
+#circuitSvg text{ font-size: 23px !important; font-weight: 650 !important; }
+
+/* 关键字再大一点（粗体一般是主信息） */
+#circuitSvg text[font-weight="950"],
+#circuitSvg text[font-weight="900"]{
+  font-size: 25px !important;
+  font-weight: 800 !important;
+}
+

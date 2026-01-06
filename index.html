@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>MCU 可视化：GPIO & 通讯时序</title>
+  <link rel="stylesheet" href="./style/theme.css"/>
+</head>
+<body data-theme="dark">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-title">MCU 可视化：GPIO & 通讯时序</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn" id="themeBtn">🌗 主题</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <aside class="side">
+      <div class="side-scroll">
+        <div class="side-section">
+          <div class="side-title">模块</div>
+          <a class="nav-item active" href="#gpio" data-page="gpio">🧩 GPIO 模式 <span class="pill">电路+电平</span></a>
+          <a class="nav-item" href="#uart" data-page="uart">📟 UART <span class="pill">协议解码</span></a>
+          <a class="nav-item" href="#i2c" data-page="i2c">🧠 I²C <span class="pill">开漏+ACK</span></a>
+          <a class="nav-item" href="#spi" data-page="spi">⚙️ SPI <span class="pill">CPOL/CPHA</span></a>
+        </div>
+
+        <div class="card">
+          <div class="card-title">知识提示</div>
+          <div id="knowledgeBox" class="knowledge"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">小词典（随模式变化）</div>
+          <div id="miniGlossary" class="hint"></div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <div class="main-head">
+        <div>
+          <div class="h1" id="pageTitle">GPIO 模式可视化</div>
+          <div class="sub" id="pageSubtitle">选择模式与负载/信号源，观察电路等效、电平变化与电流流动。</div>
+        </div>
+        <div class="controls">
+          <button class="btn primary" id="playBtn">▶️ 播放</button>
+          <button class="btn" id="pauseBtn">⏸ 暂停</button>
+          <button class="btn danger" id="resetBtn">⟲ 重置</button>
+        </div>
+      </div>
+
+      <div class="grid-top">
+        <div class="card">
+          <div class="card-title">配置</div>
+          <div id="configArea"></div>
+          <div id="configHint" class="hint" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">电路示意（动态）</div>
+          <svg id="circuitSvg" class="circuitSvg" viewBox="0 0 980 460"></svg>
+          <div id="circuitHint" class="hint" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="card timing-card">
+        <div class="timing-head">
+          <div class="card-title">时序图（带协议着色）</div>
+          <div class="timing-right">
+            <span class="tag">速度</span>
+            <input id="speed" class="num" type="number" min="0.2" max="4" step="0.2" value="1.0"/>
+          </div>
+        </div>
+        <div class="timing-scrub">
+          <span class="tag">进度</span>
+          <input id="scrub" type="range" min="0" max="1" step="0.001" value="0"/>
+        </div>
+        <svg id="timingSvg" class="timingSvg" viewBox="0 0 1200 360"></svg>
+        <div id="timingHint" class="hint"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./core/app.js"></script>
+</body>
+</html>
